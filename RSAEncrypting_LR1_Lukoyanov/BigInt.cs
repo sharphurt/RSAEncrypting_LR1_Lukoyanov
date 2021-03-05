@@ -23,22 +23,30 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
         public BigInt(string number)
         {
+            var start = 0;
+
             if (number[0] == '+')
+            {
                 _sing = 1;
+                start = 1;
+            }
             else if (number[0] == '-')
+            {
                 _sing = -1;
+                start = 1;
+            }
             else if (char.IsDigit(number[0]))
             {
                 _sing = 1;
-                _digits.Add(number[0] - '0');
+                start = 0;
             }
             else
                 throw new ArgumentException("Incorrect sign");
             
-            if (number.Skip(1).Any(c => !char.IsDigit(c)))
+            if (number.Skip(start).Any(c => !char.IsDigit(c)))
                 throw new ArgumentException("Invalid input");
             
-            _digits.AddRange(number.Skip(1).Select(c => c - '0'));
+            _digits.AddRange(number.Substring(start).TrimStart('0').Select(c => c - '0'));
         }
 
         public BigInt(BigInt parent)
