@@ -18,6 +18,12 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
         public Sign Sign { get; private set; } = Sign.Plus;
 
+        public BigInt(BigInt copy)
+        {
+            _digits = copy._digits;
+            Sign = copy.Sign;
+        }
+
         public BigInt(IEnumerable<int> digits)
         {
             _digits = digits.ToList();
@@ -56,17 +62,10 @@ namespace RSAEncrypting_LR1_Lukoyanov
             RemoveLeadingZeros();
         }
 
-        public BigInt(uint x)
-        {
-            _digits.AddRange(GetDigits(x));
-        }
-
         public BigInt(int x)
         {
             if (x < 0)
-            {
                 Sign = Sign.Minus;
-            }
 
             _digits.AddRange(GetDigits((uint) Math.Abs(x)));
         }
@@ -82,7 +81,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
             for (; end < Size; end++)
                 if (_digits[end] != 0)
                     break;
-            
+
             _digits.RemoveRange(0, end);
         }
 
@@ -96,7 +95,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
         }
 
 
-        public int GetDigit(int i) => i < Size ? _digits[i] : 0;
+        public int GetDigit(int i) => i < Size ? _digits[Size - i - 1] : 0;
 
         public void SetDigit(int i, int b)
         {
@@ -116,7 +115,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
             var digits = new List<int>();
             var maxLength = Math.Max(a.Size, b.Size);
             var tens = 0;
-            for (var i = maxLength - 1; i >= 0; i--)
+            for (var i = 0; i < maxLength; i++)
             {
                 var units = (a.GetDigit(i) + b.GetDigit(i) + tens) % 10;
                 tens = (a.GetDigit(i) + b.GetDigit(i) + tens) / 10;
@@ -155,9 +154,9 @@ namespace RSAEncrypting_LR1_Lukoyanov
             }
 
             var maxLength = Math.Max(a.Size, b.Size);
-
+    
             var debt = 0;
-            for (var i = maxLength - 1; i >= 0; i--)
+            for (var i = 0; i < maxLength; i++)
             {
                 var units = (max.GetDigit(i) - min.GetDigit(i) - debt + 10) % 10;
                 debt = max.GetDigit(i) - min.GetDigit(i) - debt < 0 ? 1 : 0;
@@ -170,22 +169,39 @@ namespace RSAEncrypting_LR1_Lukoyanov
             return new BigInt(max.Sign, digits);
         }
 
-        private static BigInt Multiply(BigInt a, BigInt b)
+        private static BigInt MultiplyOnDigit(BigInt a, int b)
         {
-            var retValue = Zero;
-
-            for (var i = 0; i < a.Size; i++)
+            switch (b)
             {
-                for (int j = 0, carry = 0; j < b.Size || carry > 0; j++)
-                {
-                    var cur = retValue.GetDigit(i + j) + a.GetDigit(i) * b.GetDigit(j) + carry;
-                    retValue.SetDigit(i + j, (int) (cur % 10));
-                    carry = cur / 10;
-                }
+                case 0:
+                    return Zero;
+                case 1:
+                    return new BigInt(a);
             }
 
-            retValue.Sign = a.Sign == b.Sign ? Sign.Plus : Sign.Minus;
-            return retValue;
+            var result = Zero;
+            for (var i = 0; i < b; i++)
+                result += a;
+
+            return result;
+        }
+
+        private static BigInt Power10(BigInt number, int power) => new BigInt(number.Sign,
+            number._digits.Concat(Enumerable.Repeat(0, power)).ToList());
+
+        private static BigInt Multiply(BigInt a, BigInt b)
+        {
+            var result = Zero;
+            for (var i = 0; i < b.Size; i++)
+            {
+                var d = b.GetDigit(b.Size - i - 1);
+                var buf = MultiplyOnDigit(a, d);
+                buf = Power10(buf, b.Size - i - 1);
+                result += buf;
+            }
+
+            result.Sign = a.Sign == b.Sign ? Sign.Plus : Sign.Minus;
+            return result;
         }
 
         private static BigInt Div(BigInt a, BigInt b)
@@ -290,7 +306,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
         private static int CompareDigits(BigInt a, BigInt b)
         {
             var maxLength = Math.Max(a.Size, b.Size);
-            for (var i = 0; i < maxLength; i++)
+            for (var i = maxLength; i >= 0; i--)
             {
                 if (a.GetDigit(i) < b.GetDigit(i))
                     return -1;
