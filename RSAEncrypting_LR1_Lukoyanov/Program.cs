@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using RSAEncrypting_LR1_Lukoyanov.RSA;
 
 namespace RSAEncrypting_LR1_Lukoyanov
 {
-    internal class Program
+    internal static class Program
     {
         private const int P = 11;
         private const int Q = 13;
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine("RSA Text Encrypting/Decrypting Util (demonstration)");
 
@@ -20,8 +20,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
                 Console.WriteLine(
                     "\nChoose the option:\n1. Encrypt and decrypt entered text\n2. Encrypt adn decrypt text file\nType 'q' to exit");
 
-                var isSuccessfullyParsed = false;
-                var parsedOptionNumber = 0;
+                bool isSuccessfullyParsed;
                 do
                 {
                     Console.Write("Enter the option number: ");
@@ -30,15 +29,15 @@ namespace RSAEncrypting_LR1_Lukoyanov
                     if (optionNumber == "q")
                         return;
 
-                    isSuccessfullyParsed = int.TryParse(optionNumber, out parsedOptionNumber);
+                    isSuccessfullyParsed = int.TryParse(optionNumber, out var parsedOptionNumber);
 
                     switch (parsedOptionNumber)
                     {
                         case 1:
-                            ConsoleInputEncrypting();
+                            await ConsoleInputEncrypting();
                             break;
                         case 2:
-                            TextFileEncrypting();
+                            await ProcessTextFile();
                             break;
                         default:
                             Console.WriteLine("Incorrect option number. Try again");
@@ -48,7 +47,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
             }
         }
 
-        private static void ConsoleInputEncrypting()
+        private static async Task ConsoleInputEncrypting()
         {
             Console.WriteLine("Enter text to encrypt/decrypt: ");
             var text = Console.ReadLine() ?? string.Empty;
@@ -60,10 +59,21 @@ namespace RSAEncrypting_LR1_Lukoyanov
             }
 
             var publicKey = PublicKeyGenerator.Generate(P, Q);
-            EncryptDecryptText(text, publicKey);
+            var (encrypt, encryptionTime) = await EncryptingTask(text, publicKey);
+            
+            Console.WriteLine($"\nEncryption time: {encryptionTime.ToString()}");
+            Console.WriteLine($"\nEncrypted bytes:\n{StringUtils.CollectionToReadable(encrypt)}\n");
+            
+            var privateKey = PrivateKeyGenerator.Generate(publicKey);
+            var (decrypt, decryptionTime) = await DecryptingTask(encrypt, privateKey);
+            
+            Console.WriteLine($"\nDecryption time: {decryptionTime.ToString()}\n");
+            Console.WriteLine($"Decrypted text:\n{decrypt}");
+            
+            Console.WriteLine($"\nTotal time passed: {(encryptionTime + decryptionTime).ToString()}");
         }
 
-        private static void TextFileEncrypting()
+        private static async Task ProcessTextFile()
         {
             Console.Write("Enter file path: ");
             var filePath = Console.ReadLine() ?? string.Empty;
@@ -82,37 +92,53 @@ namespace RSAEncrypting_LR1_Lukoyanov
                 return;
             }
 
+            Console.WriteLine("\nEncrypting...");
             var publicKey = PublicKeyGenerator.Generate(P, Q);
-            EncryptDecryptText(text, publicKey);
+            var (encrypt, encryptionTime) = await EncryptingTask(text, publicKey);
+
+            Console.WriteLine($"\nEncryption time: {encryptionTime.ToString()}\n");
+
+            var encryptedFilePath = $"{Path.GetDirectoryName(filePath) ?? "C:\\"}\\{Path.GetFileNameWithoutExtension(filePath)}_encrypted.txt";
+            using (var writer = new StreamWriter(encryptedFilePath))
+                await writer.WriteAsync(StringUtils.CollectionToReadable(encrypt));
+
+            Console.WriteLine($"Encrypted file saved at {encryptedFilePath}\n");
+            
+            Console.WriteLine("Decrypting...");
+            var privateKey = PrivateKeyGenerator.Generate(publicKey);
+            var (decrypt, decryptionTime) = await DecryptingTask(encrypt, privateKey);
+            
+            var decryptedFilePath = $"{Path.GetDirectoryName(filePath) ?? "C:\\"}\\{Path.GetFileNameWithoutExtension(filePath)}_decrypted.txt";
+            using (var writer = new StreamWriter(decryptedFilePath))
+                await writer.WriteAsync(decrypt);
+
+            Console.WriteLine($"\nDecryption time: {decryptionTime.ToString()}\n");
+            Console.WriteLine($"Decrypted file saved at {decryptedFilePath}\n");
+            
+            Console.WriteLine($"Total time passed: {(encryptionTime + decryptionTime).ToString()}");
         }
 
-        private static void EncryptDecryptText(string text, PublicKey publicKey)
+
+        private static async Task<(BigInt.BigInt[] encrypted, TimeSpan timePassed)> EncryptingTask(string text,
+            PublicKey publicKey)
         {
-            var encryptionStartTime = DateTime.Now;
-            var encrypted = RSAEncrypting.EncryptText(text, publicKey);
-            var encryptionTime = DateTime.Now - encryptionStartTime;
+            var startTime = DateTime.Now;
+            var progressBar = new ProgressBar();
+            var progress = new Progress<double>(percent => progressBar.Report(percent / 100.0));
+            var encrypted = await RsaEncrypting.EncryptText(text, publicKey, progress);
+            progressBar.Dispose();
+            return (encrypted, DateTime.Now - startTime);
+        }
 
-            Console.WriteLine($"\nEncrypted bytes: [{string.Join(", ", encrypted.Select(n => n.ToString()))}]");
-
-            Console.WriteLine($"Encryption time: {encryptionTime.ToString()}");
-
-            var decryptionStartTime = DateTime.Now;
-
-            var privateKey = PrivateKeyGenerator.Generate(publicKey);
-            var decrypted = RSAEncrypting.DecryptText(encrypted, privateKey);
-
-            var decryptionTime = DateTime.Now - decryptionStartTime;
-
-            var passed = encryptionTime + decryptionTime;
-
-            Console.WriteLine($"\nDecrypted text: {decrypted}");
-
-            Console.WriteLine($"Decryption time: {decryptionTime.ToString()}");
-
-            Console.WriteLine($"Time passed: {passed.ToString()}");
-
-            Console.WriteLine(
-                $"\nDifference between original and decrypted: {StringUtils.GetDifference(text, decrypted)}");
+        private static async Task<(string decrypt, TimeSpan timePassed)> DecryptingTask(BigInt.BigInt[] encrypt,
+            PrivateKey privateKey)
+        {
+            var startTime = DateTime.Now;
+            var progressBar = new ProgressBar();
+            var progress = new Progress<double>(percent => progressBar.Report(percent / 100.0));
+            var decrypt = await RsaEncrypting.DecryptText(encrypt, privateKey, progress);
+            progressBar.Dispose();
+            return (decrypt, DateTime.Now - startTime);
         }
     }
 }

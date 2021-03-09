@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using NUnit.Framework;
 
-namespace RSAEncrypting_LR1_Lukoyanov
+namespace RSAEncrypting_LR1_Lukoyanov.BigInt
 {
     [TestFixture]
     public class BigIntTests
     {
-        private void OperationTest(string first, string second, string result, Func<BigInt, BigInt, BigInt> func)
+        private void OperationTest(string first, string second, string result, Func<RSAEncrypting_LR1_Lukoyanov.BigInt.BigInt, RSAEncrypting_LR1_Lukoyanov.BigInt.BigInt, RSAEncrypting_LR1_Lukoyanov.BigInt.BigInt> func)
         {
             var a = new BigInt(first);
             var b = new BigInt(second);

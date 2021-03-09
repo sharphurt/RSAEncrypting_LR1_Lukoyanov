@@ -6,7 +6,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
 {
     public static class StringUtils
     {
-        public static IEnumerable<byte> ConvertToAsciiBytes(string text)
+        public static byte[] ConvertToAsciiBytes(string text)
             => Encoding.Convert(Encoding.UTF8, Encoding.ASCII, Encoding.UTF8.GetBytes(text)).ToArray();
 
         public static string ConvertToString(byte[] bytes)
@@ -24,5 +24,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
             var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
             return diff.Any() ? string.Join("\n", diff) : "There's no difference";
         }
+
+        public static string CollectionToReadable(IEnumerable<object> arr) => $"[{string.Join(", ", arr.Select(b => b.ToString()))}]";
     }
 }

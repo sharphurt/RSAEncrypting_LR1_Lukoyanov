@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
-namespace RSAEncrypting_LR1_Lukoyanov
+namespace RSAEncrypting_LR1_Lukoyanov.BigInt
 {
     public class BigInt
     {
@@ -89,9 +86,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
         public void SetDigit(int i, int b)
         {
             while (_digits.Count <= i)
-            {
                 _digits.Add(0);
-            }
 
             _digits[i] = b;
         }

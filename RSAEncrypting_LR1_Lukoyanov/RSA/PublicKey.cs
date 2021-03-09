@@ -1,12 +1,12 @@
-﻿namespace RSAEncrypting_LR1_Lukoyanov
+﻿namespace RSAEncrypting_LR1_Lukoyanov.RSA
 {
     public class PublicKey
     {
-        public BigInt E { get; }
-        public BigInt N { get; }
-        public BigInt Phi { get; }
+        public BigInt.BigInt E { get; }
+        public BigInt.BigInt N { get; }
+        public BigInt.BigInt Phi { get; }
 
-        public PublicKey(BigInt e, BigInt n, BigInt phi)
+        public PublicKey(BigInt.BigInt e, BigInt.BigInt n, BigInt.BigInt phi)
         {
             E = e;
             N = n;
