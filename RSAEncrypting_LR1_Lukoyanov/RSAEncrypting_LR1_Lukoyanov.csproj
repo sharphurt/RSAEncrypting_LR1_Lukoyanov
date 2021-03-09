@@ -48,10 +48,21 @@
         <Compile Include="BigIntTests.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="RSAEncrypting.cs" />
+        <Compile Include="RSA\PrivateKey.cs" />
+        <Compile Include="RSA\PrivateKeyGenerator.cs" />
+        <Compile Include="RSA\PublicKey.cs" />
+        <Compile Include="RSA\PublicKeyGenerator.cs" />
         <Compile Include="Sign.cs" />
+        <Compile Include="StringUtils.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="LoremIpsum.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
