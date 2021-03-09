@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 
+
 namespace RSAEncrypting_LR1_Lukoyanov
 {
     public static class RSAEncrypting

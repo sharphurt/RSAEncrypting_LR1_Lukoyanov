@@ -8,8 +8,8 @@ namespace RSAEncrypting_LR1_Lukoyanov
 {
     internal class Program
     {
-        public const int P = 11;
-        public const int Q = 13;
+        private const int P = 11;
+        private const int Q = 13;
 
         public static void Main(string[] args)
         {
@@ -22,7 +22,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
                 var isSuccessfullyParsed = false;
                 var parsedOptionNumber = 0;
-                while (!isSuccessfullyParsed)
+                do
                 {
                     Console.Write("Enter the option number: ");
                     var optionNumber = Console.ReadLine();
@@ -31,20 +31,20 @@ namespace RSAEncrypting_LR1_Lukoyanov
                         return;
 
                     isSuccessfullyParsed = int.TryParse(optionNumber, out parsedOptionNumber);
-                }
 
-                switch (parsedOptionNumber)
-                {
-                    case 1:
-                        ConsoleInputEncrypting();
-                        break;
-                    case 2:
-                        TextFileEncrypting();
-                        break;
-                    default:
-                        Console.WriteLine("Incorrect option number. Try again");
-                        break;
-                }
+                    switch (parsedOptionNumber)
+                    {
+                        case 1:
+                            ConsoleInputEncrypting();
+                            break;
+                        case 2:
+                            TextFileEncrypting();
+                            break;
+                        default:
+                            Console.WriteLine("Incorrect option number. Try again");
+                            break;
+                    }
+                } while (!isSuccessfullyParsed);
             }
         }
 
@@ -111,7 +111,8 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
             Console.WriteLine($"Time passed: {passed.ToString()}");
 
-            Console.WriteLine($"\nDifference between original and decrypted: {StringUtils.GetDifference(text, decrypted)}");
+            Console.WriteLine(
+                $"\nDifference between original and decrypted: {StringUtils.GetDifference(text, decrypted)}");
         }
     }
 }
