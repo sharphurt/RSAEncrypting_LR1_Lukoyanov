@@ -323,6 +323,9 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
         /// <returns>Возвращает число N в степени Pow </returns>
         public static BigInt Pow(BigInt n, BigInt pow)
         {
+            if (pow < Zero)
+                return Zero;
+            
             var number = new BigInt(n);
             var b = new BigInt(1);
             var map = DecToBin(pow);
@@ -330,7 +333,7 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
             {
                 b *= b;
                 if (map.GetDigitFromEnd(i) == 1)
-                    b = KaratsubaMultiplication(b, number);
+                    b *= number;
             }
 
             return b;
@@ -404,7 +407,13 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
         /// <param name="b">Второе число</param>
         /// <param name="ignoreSign">Необязательный параметр. Если <value>true</value>, то при сравнении чисел знак будет игнорироваться</param>
         /// <returns></returns>
-        public static int Comparison(BigInt a, BigInt b, bool ignoreSign = false) => CompareSign(a, b, ignoreSign);
+        public static int Comparison(BigInt a, BigInt b, bool ignoreSign = false)
+        {
+            var first = a.Size == 1 && a._digits[0] == 0 ? Zero : a;
+            var second = b.Size == 1 && b._digits[0] == 0 ? Zero : b;
+            
+            return CompareSign(first, second, ignoreSign);
+        }
 
         private static int CompareSign(BigInt a, BigInt b, bool ignoreSign = false)
         {

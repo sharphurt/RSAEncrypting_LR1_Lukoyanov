@@ -7,6 +7,5 @@
         
         public static int DecryptNumber(BigInt.BigInt number, PrivateKey privateKey) =>
             int.Parse((BigInt.BigInt.Pow(number, privateKey.D) % privateKey.N).ToString());
-        
     }
 }

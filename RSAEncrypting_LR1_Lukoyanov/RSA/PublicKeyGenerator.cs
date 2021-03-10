@@ -6,7 +6,7 @@
         {
             var n = p * q;
             var phi = (p - BigInt.BigInt.One) * (q - BigInt.BigInt.One);
-            var e = BigInt.BigInt.One;
+            BigInt.BigInt e = 2;
             
             while (BigInt.BigInt.GreatestCommonDivisor(e, phi) != BigInt.BigInt.One)
                 e += BigInt.BigInt.One;

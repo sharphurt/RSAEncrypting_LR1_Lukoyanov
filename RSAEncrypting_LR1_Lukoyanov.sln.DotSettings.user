@@ -2,5 +2,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1856d834_002Dce92_002D49c7_002Dbd90_002D1deab7a0b8d5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CorrectNumberParsingTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.BigInt.BigIntTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.NumberEncryptionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.NumberDecryptionTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -21,7 +21,6 @@ namespace RSAEncrypting_LR1_Lukoyanov.RSA
                 progress?.Report(100);
             });
             
-            
             return encrypted;
         }
 

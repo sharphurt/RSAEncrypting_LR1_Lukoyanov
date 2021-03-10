@@ -18,7 +18,8 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
         public static async Task Main(string[] args)
         {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("Ru-ru");
+            // Доступные локализации: RU-ru, En-US
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("RU-ru");
             
             Console.WriteLine(Strings.ProgramName);
             Console.WriteLine(Strings.ProgramDescription);
