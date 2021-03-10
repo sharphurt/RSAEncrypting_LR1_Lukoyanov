@@ -49,26 +49,30 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
         [TestCase("60450518", "-83758422519287", "83758482969805")]
         public void PositiveWithNegativeNumberSubtractionTest(string a, string b, string result) =>
             OperationTest(a, b, result, BigInt.Sub);
-
-
+        
         [TestCase("337435024824", "648458527447", "218812619306412930344328")]
         [TestCase("854052199010127", "181667316", "155153370718067628909132")]
         [TestCase("48733084", "219700348582626", "10706675542306393798584")]
         public void PositiveNumbersMultiplicationTest(string a, string b, string result) =>
-            OperationTest(a, b, result, BigInt.Mul);
+            OperationTest(a, b, result, BigInt.DefaultMultiplication);
 
+        [TestCase("337435024824", "648458527447", "218812619306412930344328")]
+        [TestCase("854052199010127", "181667316", "155153370718067628909132")]
+        [TestCase("48733084", "219700348582626", "10706675542306393798584")]
+        public void PositiveNumbersKaratsubaMultiplicationTest(string a, string b, string result) =>
+            OperationTest(a, b, result, BigInt.KaratsubaMultiplication);
 
         [TestCase("-170009390880219", "-6279312672", "1067542122513160400835168")]
         [TestCase("-8452134940", "-35385773834565", "299085335406064616201100")]
         [TestCase("-86200735561435224414", "-34107843654934", "2940121211469742033175496268358676")]
         public void NegativeNumbersMultiplicationTest(string a, string b, string result) =>
-            OperationTest(a, b, result, BigInt.Mul);
+            OperationTest(a, b, result, BigInt.KaratsubaMultiplication);
 
         [TestCase("87515074", "-11746782888946", "-1028020573788042972004")]
         [TestCase("989678353967768", "-7508610631", "-7431109409872963836141608")]
         [TestCase("-416532428020962", "5242874658", "-2183827311106310762580996")]
         public void PositiveWithNegativeNumbersMultiplicationTest(string a, string b, string result) =>
-            OperationTest(a, b, result, BigInt.Mul);
+            OperationTest(a, b, result, BigInt.KaratsubaMultiplication);
 
         [TestCase("567491202040867", "669969525", "847040")]
         [TestCase("793485891480702", "943855842", "840685")]
@@ -96,6 +100,5 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
         [TestCase("348091531494017", "6362305761482863276", "348091531494017")]
         public void PositiveNumbersModTest(string a, string b, string result) =>
             OperationTest(a, b, result, BigInt.Mod);
-        
     }
 }
