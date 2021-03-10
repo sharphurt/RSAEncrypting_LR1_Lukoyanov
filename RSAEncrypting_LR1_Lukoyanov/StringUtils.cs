@@ -6,16 +6,18 @@ namespace RSAEncrypting_LR1_Lukoyanov
 {
     public static class StringUtils
     {
-        public static byte[] ConvertToAsciiBytes(string text)
-            => Encoding.Convert(Encoding.UTF8, Encoding.ASCII, Encoding.UTF8.GetBytes(text)).ToArray();
+        public static byte[] ConvertToBytes(string text, Encoding encoding) =>
+            Encoding.Convert(Encoding.Default, encoding, Encoding.Default.GetBytes(text).ToArray());
 
-        public static string ConvertToString(byte[] bytes)
+        public static string ConvertBytesToString(byte[] bytes, Encoding encoding)
         {
-            var asciiChars = new char[Encoding.ASCII.GetCharCount(bytes, 0, bytes.Length)];
-            Encoding.ASCII.GetChars(bytes, 0, bytes.Length, asciiChars, 0);
-            return new string(asciiChars);
+
+          //  var e = encoding.GetString(bytes);
+            var chars = new char[encoding.GetCharCount(bytes, 0, bytes.Length)];
+            encoding.GetChars(bytes, 0, bytes.Length, chars, 0);
+            return new string(chars);
         }
-        
+
         public static string GetDifference(string s1, string s2)
         {
             var set1 = s1.Split(' ').Distinct().ToArray();
@@ -25,6 +27,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
             return diff.Any() ? string.Join("\n", diff) : "There's no difference";
         }
 
-        public static string CollectionToReadable(IEnumerable<object> arr) => $"[{string.Join(", ", arr.Select(b => b.ToString()))}]";
+        public static string CollectionToReadable(IEnumerable<object> arr) =>
+            $"[{string.Join(", ", arr.Select(b => b.ToString()))}]";
     }
 }

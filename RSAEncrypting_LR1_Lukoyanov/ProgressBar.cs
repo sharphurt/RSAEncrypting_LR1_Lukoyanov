@@ -21,19 +21,13 @@ namespace RSAEncrypting_LR1_Lukoyanov
         {
             _timer = new Timer(TimerHandler);
 
-            // A progress bar is only for temporary display in a console window.
-            // If the console output is redirected to a file, draw nothing.
-            // Otherwise, we'll end up with a lot of garbage in the target file.
             if (!Console.IsOutputRedirected)
-            {
                 ResetTimer();
-            }
         }
 
         public void Report(double value)
         {
-            // Make sure value is in [0..1] range
-            value = Math.Max(0, Math.Min(1, value));
+            value = Math.Max(0, Math.Min(100, value));
             Interlocked.Exchange(ref _currentProgress, value);
         }
 
@@ -43,8 +37,8 @@ namespace RSAEncrypting_LR1_Lukoyanov
             {
                 if (_disposed) return;
 
-                var progressBlockCount = (int) (_currentProgress * BlockCount);
-                var percent = (int) (_currentProgress * 100);
+                var progressBlockCount = (int) (_currentProgress * BlockCount / 100);
+                var percent = (int) _currentProgress;
                 var text =
                     $"[{new string('#', progressBlockCount)}{new string('-', BlockCount - progressBlockCount)}] {percent,3}% {Animation[_animationIndex++ % Animation.Length]}";
                 UpdateText(text);
@@ -55,37 +49,26 @@ namespace RSAEncrypting_LR1_Lukoyanov
 
         private void UpdateText(string text)
         {
-            // Get length of common portion
             var commonPrefixLength = 0;
             var commonLength = Math.Min(_currentText.Length, text.Length);
             while (commonPrefixLength < commonLength && text[commonPrefixLength] == _currentText[commonPrefixLength])
-            {
                 commonPrefixLength++;
-            }
 
-            // Backtrack to the first differing character
-            StringBuilder outputBuilder = new StringBuilder();
+            var outputBuilder = new StringBuilder();
             outputBuilder.Append('\b', _currentText.Length - commonPrefixLength);
-
-            // Output new suffix
             outputBuilder.Append(text.Substring(commonPrefixLength));
-            
+
             Console.Write(outputBuilder);
             _currentText = text;
         }
 
-        private void ResetTimer()
-        {
-            _timer.Change(_animationInterval, TimeSpan.FromMilliseconds(-1));
-        }
+        private void ResetTimer() => _timer.Change(_animationInterval, TimeSpan.FromMilliseconds(-1));
 
         public void Dispose()
         {
+            TimerHandler(null);
             lock (_timer)
-            {
                 _disposed = true;
-                UpdateText(string.Empty);
-            }
         }
     }
 }
