@@ -494,7 +494,7 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
 
         public static BigInt operator +(BigInt a, BigInt b) => Add(a, b);
 
-        public static BigInt operator -(BigInt a, BigInt b) => a + -b;
+        public static BigInt operator -(BigInt a, BigInt b) => Sub(a, b);
 
         public static BigInt operator *(BigInt a, BigInt b) => KaratsubaMultiplication(a, b);
 
@@ -515,7 +515,7 @@ namespace RSAEncrypting_LR1_Lukoyanov.BigInt
         public static bool operator !=(BigInt a, BigInt b) => Comparison(a, b) != 0;
 
         public static implicit operator BigInt(int i) => new BigInt(i);
-
+        
         public static implicit operator BigInt(byte b) => new BigInt(b);
 
         public override bool Equals(object obj) => obj is BigInt && this == (BigInt) obj;

@@ -49,7 +49,7 @@
         <Compile Include="BigInt\Sign.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="RSA\AsciiCryptographer.cs" />
+        <Compile Include="RSA\TextCryptographer.cs" />
         <Compile Include="RSA\ICryptographer.cs" />
         <Compile Include="RSA\PrivateKey.cs" />
         <Compile Include="RSA\PrivateKeyGenerator.cs" />

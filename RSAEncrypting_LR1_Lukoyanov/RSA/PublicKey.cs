@@ -13,6 +13,6 @@
             Phi = phi;
         }
 
-        public override string ToString() => $"(E: {E}, N: {N}, Phi: {Phi})";
+        public override string ToString() => $"(E: {E}, N: {N})";
     }
 }

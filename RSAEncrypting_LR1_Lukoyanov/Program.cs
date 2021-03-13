@@ -14,7 +14,7 @@ namespace RSAEncrypting_LR1_Lukoyanov
         private static int _p;
         private static int _q;
 
-        private static readonly ICryptographer Cryptographer = new AsciiCryptographer();
+        private static readonly ICryptographer<string> Cryptographer = new TextCryptographer();
 
         public static async Task Main(string[] args)
         {

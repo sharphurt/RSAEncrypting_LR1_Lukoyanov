@@ -11,6 +11,6 @@
             N = n;
         }
 
-        public override string ToString() => $"(D: {D}, N: {N})";
+        public override string ToString() => $"(D: {D})";
     }
 }

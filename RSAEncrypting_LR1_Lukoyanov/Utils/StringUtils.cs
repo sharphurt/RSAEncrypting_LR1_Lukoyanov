@@ -6,16 +6,12 @@ namespace RSAEncrypting_LR1_Lukoyanov
 {
     public static class StringUtils
     {
-        public static byte[] ConvertToBytes(string text, Encoding encoding) =>
-            Encoding.Convert(Encoding.Default, encoding, Encoding.Default.GetBytes(text).ToArray());
+        public static int[] ConvertToNumbers(string text, Dictionary<char, int> alphabet) =>
+            text.Where(alphabet.ContainsKey).Select(symbol => alphabet[symbol]).ToArray();
 
-        public static string ConvertBytesToString(byte[] bytes, Encoding encoding)
+        public static string ConvertNumbersToString(IEnumerable<int> numbers, Dictionary<char, int> alphabet)
         {
-
-          //  var e = encoding.GetString(bytes);
-            var chars = new char[encoding.GetCharCount(bytes, 0, bytes.Length)];
-            encoding.GetChars(bytes, 0, bytes.Length, chars, 0);
-            return new string(chars);
+            return new string(numbers.Select(n => alphabet.FirstOrDefault(x => x.Value == n).Key).ToArray());
         }
 
         public static string GetDifference(string s1, string s2)

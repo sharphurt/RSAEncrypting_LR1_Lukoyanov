@@ -4,5 +4,15 @@
     &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.BigInt.BigIntTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.NumberEncryptionTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.NumberDecryptionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.StringEncryptionTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.RSA.RsaTests.StringDecryptionTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4e16deb1_002Db332_002D470a_002Dae3e_002Dc2b6ea1e3f4b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from RSA" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;ProjectFolder&gt;5F5C82F4-1044-4E83-9FDC-3605668F60EF/d:RSA&lt;/ProjectFolder&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::5F5C82F4-1044-4E83-9FDC-3605668F60EF::.NETFramework,Version=v4.8::RSAEncrypting_LR1_Lukoyanov.BigInt.BigIntTests&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

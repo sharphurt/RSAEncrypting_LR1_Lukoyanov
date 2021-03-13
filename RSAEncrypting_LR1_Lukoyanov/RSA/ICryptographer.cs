@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace RSAEncrypting_LR1_Lukoyanov.RSA
 {
-    public interface ICryptographer
+    public interface ICryptographer<T>
     {
-        Task<BigInt.BigInt[]> Encrypt(string text, PublicKey publicKey, IProgress<double> progress);
+        Task<BigInt.BigInt[]> Encrypt(T text, PublicKey publicKey, IProgress<double> progress = default);
 
-        Task<string> Decrypt(BigInt.BigInt[] encrypt, PrivateKey privateKey, IProgress<double> progress);
+        Task<T> Decrypt(BigInt.BigInt[] encrypt, PrivateKey privateKey, IProgress<double> progress = default);
     }
 }
